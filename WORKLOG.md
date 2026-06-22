@@ -5,7 +5,7 @@ Goal: see [GOAL.md](GOAL.md). User base location: Hamburg, 22303 (Barmbek).
 
 ## Iteration-Backlog (priorisiert nach Machbarkeit + HH-Relevanz)
 - [ ] **It.1 — OBI Filialbestand HH**: Storefinder/`availability`-API entdecken, HH-Markt-ID(s) finden, Scraper, Chrome-Verify.
-- [ ] **It.2 — toom**: (a) httpx-Problem fixen (liefert kein JSON-LD → evtl. Header/Playwright/anderer Endpunkt); (b) „Verfügbar in {Markt}" für HH-Märkte parsen.
+- [x] **It.2 — toom**: DIAGNOSTIZIERT → React/CSR, Product-JSON-LD client-injiziert, Verfügbarkeit nicht in roh-HTML, kein separater API-Call (Daten in Hydration-Blob). httpx kann's nicht zuverlässig. → **toom in config DEAKTIVIERT** (stoppt Dauer-Health-Warnung), für Playwright-Track (v2) vorgemerkt. Aktive Quellen jetzt: idealo, obi, bauhaus, hagebau.
 - [ ] **It.3 — Bauhaus Click&Collect HH** (Wandsbek): Filialbestand-Endpunkt, Scraper, Chrome-Verify.
 - [ ] **It.4 — idealo robuster**: 503/Rate-Limit (Retry/Backoff, Headers) — cross-cutting.
 - [ ] **It.5 — Deep-/Add-to-Cart-Links** pro Shop in der Telegram-Nachricht.
@@ -33,6 +33,9 @@ Goal: see [GOAL.md](GOAL.md). User base location: Hamburg, 22303 (Barmbek).
   ehrliche-`InStock`-Shops), parallel der harte Filial-Track (OBI HH).
 
 ## Next Action
-(a) OBI: HH-Markt im Storefinder wählen, den Availability-API-Call (SKU 8620890 + Markt-ID) abfangen,
-Antwortformat + ob httpx-tauglich dokumentieren.
-(b) Quick win: toom-httpx-Problem diagnostizieren (warum kein JSON-LD via httpx).
+- It.4 (quick win): idealo-503 diagnostizieren (persistentes Datacenter-IP-Rate-Limit? → Retry/Backoff
+  oder akzeptieren) UND/ODER 1–2 neue Shops mit sauberem statischem `InStock`-JSON-LD ergänzen
+  (Kandidaten prüfen: Coolblue, expert, Klimaworld, tink, Cyberport).
+- It.1 (Filial-Track, parallel): OBI HH-Markt im Storefinder wählen → Availability-API-Call abfangen
+  (SKU 8620890 + Markt-ID) → httpx-Tauglichkeit prüfen.
+- Lernpunkt: CSR-React-Shops (wie toom) brauchen Playwright; statische-JSON-LD-Shops sind die robusten Quick Wins.

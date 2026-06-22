@@ -9,7 +9,7 @@ sources_enabled:
   - "idealo"
   # hornbach: disabled: JS-challenge page (Cloudflare bot block), no JSON-LD; see v2
   - "obi"
-  - "toom"
+  # toom: disabled: client-side-rendered (React); availability not in raw HTML, no httpx API; needs Playwright track (v2)
   - "bauhaus"
   - "hagebau"
 hamburg_pickup_priority: true
