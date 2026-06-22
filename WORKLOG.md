@@ -63,6 +63,18 @@ Viele Händler blocken Datacenter/CI-IPs hart: **idealo** (persistente 503-Block
 **Hagebau** (Friendly Captcha), **MediaMarkt** (GraphQL+Bot-Schutz). Verlässlich von CI: **OBI** (offene API) + **toom** (Playwright, kein Block).
 Ob GitHub-Runner-IPs weniger geblockt sind als die Sandbox → zeigt nur der CI-Health-Check (daher nichts vorschnell deaktiviert).
 
+## DONE (Goal-Session 2, Forts.)
+- ✅ **bauhaus_stores** (Playwright, Cloudflare-Bypass via XHR-Intercept der `purchasability`-API, storeId 595 = Hamburg-Moorfleet).
+- ✅ Damit 3 echte Filial-Quellen: **obi_stores** (offene API), **toom_stores** + **bauhaus_stores** (Playwright).
+- **MediaMarkt (Elektronik):** Playwright lädt, Verfügbarkeit via GraphQL abfangbar — ABER Preis **1.499 €** (≈2× Retail).
+  → Preisfilter (≤850) würde strukturell NIE alarmieren → **nicht gebaut** (YAGNI, nur Wartungslast). Saturn analog.
+- **Hagebau:** Friendly Captcha → Playwright kann Captcha nicht lösen → nicht machbar.
+- **idealo/bauhaus(online)/hagebau(online):** Datacenter-IP-geblockt (503/Cloudflare/Captcha) → ggf. CI-Health-Warnungen;
+  Filial-Quellen (obi_stores/toom_stores/bauhaus_stores) + obi(online) sind die robusten.
+
+## OFFEN (User-Aktion nötig)
+- ⚠️ **CI-Workflow updaten** (Playwright-Browser-Install) — Web-UI-Paste geliefert. OHNE das laufen toom_stores + bauhaus_stores auf CI NICHT (Health-Warnung).
+
 ## Next Action (Plan)
 1. **Playwright-Track** bauen (öffentl. Repo = unbegrenzte Actions, Laufzeit egal). Start: **toom** (sauberer
    CSR-Kandidat, kein Block) → echter Filialbestand. CI: Playwright-Browser-Install im Workflow (User-Paste, kein Scope).
