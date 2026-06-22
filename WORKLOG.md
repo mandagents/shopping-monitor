@@ -21,8 +21,18 @@ Goal: see [GOAL.md](GOAL.md). User base location: Hamburg, 22303 (Barmbek).
 
 ## Current State
 - Bot live (Actions, 5-Min, public repo). 0 False Positives nach InStoreOnly-Fix.
-- v2-Arbeit beginnt mit It.1 (OBI Filialbestand).
+- It.1 (OBI) angefangen: **Filialbestand lädt NICHT beim Seitenaufruf** — Initial-Netzwerk ist nur
+  Tracking (DoubleClick/Pinterest/DynamicYield/Exponea/Instana/baqend), KEIN Availability-Call.
+  → echter Bestand kommt erst nach Auswahl eines „Mein Markt" (HH) via interner API.
+
+## Approach-Entscheidung (2026-06-22)
+- **API-first**: pro Shop die markt-spezifische Stock-API nachbauen (httpx-tauglich, leichtgewichtig).
+  Playwright (Headless-Browser auf Actions) nur als Fallback, wenn ein Shop ohne JS/Bot-Schutz nicht
+  geht — und nur nach Rücksprache (ändert die Actions-Infra).
+- **Re-Priorisierung**: zuerst schnelle, robuste Online-Abdeckung (idealo/toom fixen + 2–3 weitere
+  ehrliche-`InStock`-Shops), parallel der harte Filial-Track (OBI HH).
 
 ## Next Action
-It.1: OBI-Storefinder/Availability-API via Chrome reverse-engineeren (HH-Markt wählen, Netzwerk-Call
-mit Produkt-SKU 8620890 + Markt-ID erfassen), Antwortformat dokumentieren.
+(a) OBI: HH-Markt im Storefinder wählen, den Availability-API-Call (SKU 8620890 + Markt-ID) abfangen,
+Antwortformat + ob httpx-tauglich dokumentieren.
+(b) Quick win: toom-httpx-Problem diagnostizieren (warum kein JSON-LD via httpx).
