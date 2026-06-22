@@ -42,9 +42,20 @@ Goal: see [GOAL.md](GOAL.md). User base location: Hamburg, 22303 (Barmbek).
 - **Strategischer Lernpunkt:** Shop-interne Stock-JSON-APIs (`/api/pdp/v1/stock/{sku}?storeIds=`) sind httpx-tauglich
   → Filial-Track braucht KEIN Playwright (zumindest OBI). Muster auf Bauhaus/Hagebau/toom übertragen.
 
-## Next Action
-- It.3: idealo-503 angehen (Retry/Backoff bei Datacenter-Rate-Limit).
-- It.4: gleiches Stock-API-Muster für **Bauhaus** + **Hagebau** Filialbestand HH suchen (Netzwerk-Mitschnitt
-  wie bei OBI) → je `*_stores`-Quelle.
-- It.5: Add-to-Cart-/Deep-Links in der Telegram-Nachricht.
-- Später: toom/MediaMarkt/Amazon via Playwright-Track, falls keine httpx-API.
+## Feasibility-Matrix Filialbestand (Reverse-Engineering-Runde, 2026-06-22)
+Methode: Chrome `performance.getEntriesByType('resource')` → API finden → httpx-Verify.
+| Shop | Mechanismus | httpx? | Weg |
+|---|---|---|---|
+| **OBI** | offene REST `/api/pdp/v1/stock/{sku}?storeIds=` | ✅ | GELIEFERT (obi_stores) |
+| Bauhaus | `/api/product-availability/availability-detail/{id}` hinter **Cloudflare** (403, `__cf_bm`) | ❌ | Playwright (CI-Cloudflare-Risiko) |
+| MediaMarkt | **GraphQL** `/api/v1/graphql` + Bot-Schutz | ❌ | Playwright (riskant) |
+| Hagebau | **Friendly Captcha** | ❌ | Playwright (riskant) |
+| toom | CSR React, kein Bot-Schutz, keine eingebettete/offene API | ⚠️ | **Playwright (viabel, kein Block)** |
+→ Lesson: nur OBI hat eine offene, CI-freundliche API. Rest = bot-geschützt/CSR.
+
+## Next Action (Plan)
+1. **Playwright-Track** bauen (öffentl. Repo = unbegrenzte Actions, Laufzeit egal). Start: **toom** (sauberer
+   CSR-Kandidat, kein Block) → echter Filialbestand. CI: Playwright-Browser-Install im Workflow (User-Paste, kein Scope).
+2. Opportunistisch über denselben Track: Bauhaus/MediaMarkt/Hagebau versuchen (akzeptieren, dass CI-Cloudflare ggf. blockt → Health-Check fängt's).
+3. **idealo-503** robuster (Retry/Backoff) — verlässlicher Online-Gewinn.
+4. **Deep-/Add-to-Cart-Links** in der Telegram-Nachricht (alle Quellen).
