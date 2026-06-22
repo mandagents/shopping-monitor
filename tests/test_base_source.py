@@ -22,11 +22,14 @@ NO_AVAILABILITY = """
 """
 
 
-def test_parse_instoreonly_offer():
+def test_instoreonly_is_not_treated_as_available():
+    # InStoreOnly is an unreliable static catalog flag for some retailers
+    # (OBI, Hagebau emit it even when sold out) -> must NOT count as available,
+    # otherwise the bot sends false-positive alerts.
     spec = SourceSpec("obi", "https://obi.example/p/8620890")
     offer = parse_jsonld_source(OBI_INSTOREONLY, spec)
-    assert offer.available is True
-    assert offer.pickup_only is True
+    assert offer is not None  # still parses (price/ean), just not available
+    assert offer.available is False
     assert offer.price == 799.99
     assert offer.ean == "4048164116478"
     assert offer.url == "https://obi.example/p/8620890"

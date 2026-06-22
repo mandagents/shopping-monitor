@@ -1,7 +1,9 @@
 # Verfügbarkeits-Monitor: Midea PortaSplit 12.000 BTU
 
 **Datum:** 2026-06-22
-**Status:** Design abgenommen (mündlich), Recon abgeschlossen — wartet auf Spec-Review
+**Status:** Umgesetzt & live (GitHub Actions). Siehe Korrektur unten.
+
+> **Korrektur (Post-Deploy, 2026-06-22):** Die ursprüngliche Entscheidung „Abholung/`InStoreOnly` zählt als verfügbar" wurde **revidiert.** Live-Test ergab False Positives: OBI und Hagebau senden `InStoreOnly` im JSON-LD als statisches Katalog-Flag, auch wenn das Gerät ausverkauft/„derzeit nicht verfügbar" ist. Daher wird `InStoreOnly` jetzt **nicht** mehr als „verfügbar" gewertet — nur `InStock`/`LimitedAvailability`/`OnlineOnly`/`InStoreOnline`. Verlässliche filialgenaue Abhol-Erkennung (echter Markt-Bestand) ist ein **v2**-Thema. Alle Stellen unten, die „Abholung zählt als Treffer / `InStoreOnly`" sagen, sind durch diese Korrektur überschrieben.
 
 ## 1. Ziel
 

@@ -53,8 +53,11 @@ def availability_state(av: str | None) -> tuple[bool, bool]:
     if not isinstance(av, str) or not av:
         return (False, False)
     token = av.rstrip("/").rsplit("/", 1)[-1].lower()
-    if token == "instoreonly":
-        return (True, True)
+    # NOTE: schema.org `InStoreOnly` is deliberately NOT treated as available.
+    # Some retailers (e.g. OBI, Hagebau) emit it as a static catalog flag even
+    # when the item is sold out ("derzeit nicht verfügbar" / "Ausverkauft"),
+    # which produced false-positive alerts. Only genuine buyable states count.
+    # Reliable per-store pickup detection is a v2 task.
     if token in _AVAILABLE:
         return (True, False)
     return (False, False)

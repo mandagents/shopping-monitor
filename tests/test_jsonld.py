@@ -38,7 +38,8 @@ def test_aggregate_offer_uses_low_price():
 
 def test_availability_state_mapping():
     assert availability_state("https://schema.org/InStock") == (True, False)
-    assert availability_state("http://schema.org/InStoreOnly") == (True, True)
+    # InStoreOnly is NOT trusted as available (false-positive source); treated like OOS
+    assert availability_state("http://schema.org/InStoreOnly") == (False, False)
     assert availability_state("https://schema.org/OutOfStock") == (False, False)
     assert availability_state(None) == (False, False)
 
