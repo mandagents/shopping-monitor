@@ -29,3 +29,14 @@ def test_format_offer_no_pickup_marker_when_not_pickup_only():
 def test_format_offer_handles_unknown_price():
     text, _ = format_offer(_offer(price=None))
     assert "Preis unbekannt" in text
+
+
+def test_cta_label_pickup_vs_buy():
+    from src.run import cta_label
+    assert "Reservieren" in cta_label(_offer(pickup_only=True))
+    assert "kaufen" in cta_label(_offer(pickup_only=False))
+
+
+def test_format_offer_includes_title_for_market_info():
+    text, _ = format_offer(_offer(title="Midea PortaSplit — toom Hamburg-Wandsbek (Abholung)", pickup_only=True))
+    assert "Hamburg-Wandsbek" in text

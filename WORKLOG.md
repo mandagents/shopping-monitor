@@ -53,6 +53,16 @@ Methode: Chrome `performance.getEntriesByType('resource')` → API finden → ht
 | toom | CSR React, kein Bot-Schutz, keine eingebettete/offene API | ⚠️ | **Playwright (viabel, kein Block)** |
 → Lesson: nur OBI hat eine offene, CI-freundliche API. Rest = bot-geschützt/CSR.
 
+## DONE (Goal-Session 2)
+- ✅ **obi_stores** (offene OBI-Stock-API) — echter HH-Filialbestand, httpx, CI-tauglich.
+- ✅ **toom_stores** (Playwright) — toom HH-Wandsbek-Markt gerendert, echte Verfügbarkeit. Braucht `playwright install chromium` im CI-Workflow (User-Paste geliefert).
+- ✅ **Deep-/CTA-Links** — Alerts zeigen Shop+Preis+Abholung+Titel(Markt), CTA pickup-spezifisch („Reservieren/Abholen" vs „Jetzt kaufen"), Direkt-Deep-Link-Button. Echte „Add-to-Cart"-Deeplinks bieten diese Shops öffentlich NICHT → Direkt-Produkt-/Reservierungslink ist die umsetzbare Variante.
+
+## Wichtige Erkenntnis: Datacenter-IP-Blocking
+Viele Händler blocken Datacenter/CI-IPs hart: **idealo** (persistente 503-Blockseite, 3×), **Bauhaus** (Cloudflare 403),
+**Hagebau** (Friendly Captcha), **MediaMarkt** (GraphQL+Bot-Schutz). Verlässlich von CI: **OBI** (offene API) + **toom** (Playwright, kein Block).
+Ob GitHub-Runner-IPs weniger geblockt sind als die Sandbox → zeigt nur der CI-Health-Check (daher nichts vorschnell deaktiviert).
+
 ## Next Action (Plan)
 1. **Playwright-Track** bauen (öffentl. Repo = unbegrenzte Actions, Laufzeit egal). Start: **toom** (sauberer
    CSR-Kandidat, kein Block) → echter Filialbestand. CI: Playwright-Browser-Install im Workflow (User-Paste, kein Scope).

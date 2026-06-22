@@ -18,9 +18,14 @@ def format_offer(offer: Offer) -> tuple[str, str]:
     price = f"{offer.price:.2f} €" if offer.price is not None else "Preis unbekannt"
     text = (
         "🟢 <b>Midea PortaSplit verfügbar!</b>\n"
-        f"{offer.source} — <b>{price}</b>{pickup}"
+        f"<b>{offer.source}</b> — <b>{price}</b>{pickup}\n"
+        f"<i>{offer.title}</i>"
     )
     return text, offer.url
+
+
+def cta_label(offer: Offer) -> str:
+    return "🏬 Reservieren / Abholen" if offer.pickup_only else "🛒 Jetzt kaufen"
 
 
 def main() -> None:
@@ -37,7 +42,7 @@ def main() -> None:
 
     def notify_offer(offer: Offer) -> None:
         text, url = format_offer(offer)
-        send_telegram(token, chat_id, text, button_text="🛒 Zum Shop", button_url=url)
+        send_telegram(token, chat_id, text, button_text=cta_label(offer), button_url=url)
 
     def notify_health(name: str) -> None:
         send_telegram(
