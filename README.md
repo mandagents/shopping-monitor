@@ -24,6 +24,7 @@ Vollständiges Design: [docs/superpowers/specs/2026-06-22-klimaanlage-verfuegbar
 | OBI | Retail + HH-Abholung | 799,99 € | InStoreOnly |
 | toom | Retail + Filialbestand | 699 € | OOS Lieferung |
 | Bauhaus | Retail + HH-Abholung | 749 € | online OOS |
+| Hagebau | Retail (⚠️ Captcha-Risiko) | 849 € | InStoreOnly / Ausverkauft |
 
 ## Setup (noch zu bauen)
 

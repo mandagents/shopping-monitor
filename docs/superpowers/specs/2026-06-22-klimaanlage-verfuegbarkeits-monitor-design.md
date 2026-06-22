@@ -63,7 +63,8 @@ GitHub Actions (Cron, alle 5 Min)
    ├─ obi         (Retail 799,99 €, InStoreOnly, HH-Abholung)
    ├─ toom        (Retail 699 €, Filialbestand, JSON-LD unsauber)
    ├─ bauhaus     (Retail 749 €, HH-Abholung Wandsbek)
-   └─ … (Hagebau, Geizhals, MediaMarkt in v2)
+   ├─ hagebau     (Retail 849 €, ⚠️ Friendly Captcha-Risiko)
+   └─ … (Geizhals, MediaMarkt in v2)
    │
    ▼
 [ Filter ]      → in_stock == true  UND  price <= MAX_PRICE  UND  EAN/Identität passt
@@ -112,6 +113,7 @@ Pro Quelle bestätigte Signale (Recon-Stand 2026-06-22):
 | **obi** | `/p/8620890/...` (SKU 8620890) | ✅ `4048164116478` | `Product.offers.availability` (`InStoreOnly`/`InStock`), `price` | `availability != OutOfStock` UND `price <= MAX_PRICE` | **799,99 €, InStoreOnly** |
 | **toom** | `/p/.../9350668` (SKU 9350668) | ❌ `gtin13`==SKU (unbrauchbar) | `availability` brauchbar; **Preis im JSON-LD falsch (799 statt 699)** | sichtbaren Preis parsen; `availability` + Filialtext („Verfügbar in …") | 699 €, OOS Lieferung, Filiale nahe HH |
 | **bauhaus** | `/klimaanlagen/...-portasplit-12000-btu/p/31934233` | ✅ `4048164116478` | `Product.offers.availability`, `price` (749) | `availability != OutOfStock` ODER Filialbestand (Click&Collect, HH Wandsbek) | 749 €, online OOS |
+| **hagebau** | `/p/midea-klimaanlage-portasplit-12000-btu-anV1425543/` (SKU 1425543) | ✅ `4048164116478` | `Product.offers.availability`, `price` (849) | `availability != OutOfStock` UND `price <= MAX_PRICE` | 849 €, InStoreOnly/Ausverkauft · ⚠️ **Friendly Captcha** |
 
 **Identitäts-Check:** Wo `gtin13` vorhanden → muss `4048164116478` sein. So wird nie
 die „Comfee Cool" gemeldet. **Ausnahme toom:** dort `gtin13` == interne Artikelnr. →
@@ -122,6 +124,12 @@ nicht den (falschen) JSON-LD-Preis.
 `InStoreOnly` / Filialbestand als Treffer (OBI führt es z.B. aktuell als `InStoreOnly` zu
 799,99 € → mit `MAX_PRICE=850` ein gültiger Alarm). Filialbestand wird im Alarm als
 „🏬 Abholung" markiert, Hamburg-Nähe priorisiert.
+
+**Captcha-Risiko hagebau:** Die Hagebau-Produktseite liefert sauberes JSON-LD (korrekte
+EAN, Preis), enthält aber **Friendly Captcha**. Ob die GitHub-Actions-IP ungehindert
+durchkommt, zeigen erst die ersten Live-Läufe. Verhalten: Wird Hagebau wiederholt
+blockiert, greift der Health-Check (⚠️-Ping) und wir behandeln Hagebau als reine
+„im-Markt-prüfen"-Quelle (v2) statt als zuverlässige Online-Quelle. Kein blindes Vertrauen.
 
 **Kein Headless-Browser in v1** (passt zu GitHub Actions, schnell). Realistischer
 User-Agent, je Quelle 1 Request pro Lauf (höflich, kein Rate-Problem).
@@ -163,7 +171,7 @@ product:
   name_contains: ["portasplit", "3,5"]   # Fallback-Match
   exclude_contains: ["cool", "2,35"]      # Comfee Cool ausschließen
 max_price_eur: 850        # gelockert: fängt OBI 799,99 € mit; bewusst < 999 €
-sources_enabled: ["idealo", "hornbach", "obi", "toom", "bauhaus"]
+sources_enabled: ["idealo", "hornbach", "obi", "toom", "bauhaus", "hagebau"]
 hamburg_pickup_priority: true
 health_fail_threshold: 3  # Läufe in Folge bis Warnung
 # secrets: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
@@ -181,14 +189,13 @@ health_fail_threshold: 3  # Läufe in Folge bis Warnung
 ## 12. Phasen
 
 **v1 (zuerst live):**
-- Quellen: **idealo** (primär-Aggregator), **hornbach**, **obi**, **toom**, **bauhaus**
+- Quellen: **idealo** (primär-Aggregator), **hornbach**, **obi**, **toom**, **bauhaus**, **hagebau** (mit Captcha-Vorbehalt)
 - JSON-LD/HTTP-Detection, EAN-Identitätscheck (toom: Name-Match), Preisfilter (`MAX_PRICE=850`)
 - Abholung/Filialbestand zählt als Treffer (Hamburg priorisiert)
 - Telegram-Notify mit Direktlink, GitHub Actions Cron (5 Min), Dedupe, Health-Check
 - Tests gegen Fixtures (je InStock/OutOfStock-Snapshot pro Quelle)
 
 **v2 (Ausbau):**
-- **Hagebau** (⚠️ Online-Sortiment unvollständig + Friendly Captcha → nur Markt-/Click&Collect-Abfrage, unzuverlässig)
 - **Geizhals** als Aggregator (Varianten-Disambiguierung der „Comfee"-Gruppe v233573, kein GTIN im Markup)
 - Weitere Shops: MediaMarkt/Saturn, Hagebau-Regionalmärkte
 - Add-to-Cart-Deeplinks (statt nur Direktlink), wo der Shop es unterstützt
