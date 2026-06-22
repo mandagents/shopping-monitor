@@ -42,9 +42,11 @@ echte Seite im Browser zeigt. Stimmt es nicht → Verifier failt → Scraper nic
 5. Commit + push (nur Code/Tests — Workflow-Datei via Web-UI, kein Token-Scope).
 6. WORKLOG.md fortschreiben (Evidenz, Stand, nächster Schritt).
 
-## Approval Gates (vor Ausführung Nutzer fragen)
-- Scraping hart bot-geschützter Shops (MediaMarkt/Saturn, Amazon) bevor ich da Zeit investiere.
-- Alles Irreversible/Öffentliche über das hinaus, was schon freigegeben ist.
+## Autonomie / Hard Limits
+Volle Autonomie: Ich entscheide **was** und **wie** selbst — Ansatz/Architektur (Playwright vs httpx),
+welche Shops (auch bot-geschützte versuchen), Reihenfolge. **Keine Per-Entscheidungs-Rückfragen.**
+Nur echte Hard Limits stoppen mich: Eingabe von Zugangsdaten/Secrets, sowie destruktive oder
+irreversible öffentliche Aktionen ohne Freigabe. Sonst: entscheiden, umsetzen, pro Iteration berichten.
 
 ## Blocker-Standard
 Externer Blocker (z.B. nur per CAPTCHA/Login, keine API) → Shop als „blocked" markieren mit
