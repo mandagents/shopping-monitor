@@ -12,5 +12,6 @@ sources_enabled:
   # toom: disabled: client-side-rendered (React); availability not in raw HTML, no httpx API; needs Playwright track (v2)
   - "bauhaus"
   - "hagebau"
+  - "obi_stores"
 hamburg_pickup_priority: true
 health_fail_threshold: 3
