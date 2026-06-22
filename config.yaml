@@ -1,0 +1,16 @@
+product:
+  ean: "4048164116478"
+  model_no: "10002085"
+  match_require_all: ["portasplit"]
+  match_require_any: ["12000", "12.000", "3,5", "3.5"]
+  match_exclude_any: ["cool", "2,35", "2.35"]
+max_price_eur: 850
+sources_enabled:
+  - "idealo"
+  # hornbach: disabled: JS-challenge page (Cloudflare bot block), no JSON-LD; see v2
+  - "obi"
+  - "toom"
+  - "bauhaus"
+  - "hagebau"
+hamburg_pickup_priority: true
+health_fail_threshold: 3

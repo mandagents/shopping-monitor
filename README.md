@@ -26,10 +26,15 @@ Vollständiges Design: [docs/superpowers/specs/2026-06-22-klimaanlage-verfuegbar
 | Bauhaus | Retail + HH-Abholung | 749 € | online OOS |
 | Hagebau | Retail (⚠️ Captcha-Risiko) | 849 € | InStoreOnly / Ausverkauft |
 
-## Setup (noch zu bauen)
+## Setup
 
-1. Telegram-Bot via [@BotFather](https://t.me/botfather) anlegen → `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID`
-2. Beide Werte als **GitHub Secrets** hinterlegen
-3. GitHub Actions Workflow aktiviert den 5-Minuten-Cron
+1. Telegram-Bot bei [@BotFather](https://t.me/botfather) anlegen → `TELEGRAM_BOT_TOKEN`.
+2. Chat-ID ermitteln: dem Bot eine Nachricht schicken, dann
+   `https://api.telegram.org/bot<TOKEN>/getUpdates` öffnen → `chat.id`.
+3. In GitHub: **Settings → Secrets and variables → Actions** zwei Secrets anlegen:
+   `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
+4. Workflow läuft automatisch alle 5 Min; manuell testen über **Actions → PortaSplit Monitor → Run workflow**.
+
+Konfiguration in `config.yaml` (Preisgrenze, aktive Quellen).
 
 > Keine Login- oder Zahlungsdaten auf dem Server. Der Bot meldet nur — gekauft wird manuell.
