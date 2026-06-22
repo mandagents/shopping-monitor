@@ -13,5 +13,6 @@ sources_enabled:
   - "bauhaus"
   - "hagebau"
   - "obi_stores"
+  - "toom_stores"
 hamburg_pickup_priority: true
 health_fail_threshold: 3
