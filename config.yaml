@@ -15,5 +15,6 @@ sources_enabled:
   - "obi_stores"
   - "toom_stores"
   - "bauhaus_stores"
+  - "aliexpress"
 hamburg_pickup_priority: true
 health_fail_threshold: 3

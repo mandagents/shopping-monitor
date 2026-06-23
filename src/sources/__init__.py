@@ -25,7 +25,7 @@ SPECS: dict[str, SourceSpec] = {
 }
 
 
-KNOWN_SOURCES = set(SPECS) | {"toom", "obi_stores", "toom_stores", "bauhaus_stores"}
+KNOWN_SOURCES = set(SPECS) | {"toom", "obi_stores", "toom_stores", "bauhaus_stores", "aliexpress"}
 
 
 def unknown_sources(names) -> list:
@@ -49,5 +49,9 @@ def get_check(name: str):
         from . import bauhaus_stores
 
         return bauhaus_stores.check
+    if name == "aliexpress":
+        from . import aliexpress
+
+        return aliexpress.check
     spec = SPECS[name]
     return lambda client: check_jsonld(client, spec)
