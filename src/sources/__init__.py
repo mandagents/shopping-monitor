@@ -6,10 +6,6 @@ SPECS: dict[str, SourceSpec] = {
         "https://www.idealo.de/preisvergleich/OffersOfProduct/204374464_-portasplit-3-5-kw-midea.html",
         price_mode="aggregate",
     ),
-    "hornbach": SourceSpec(
-        "hornbach",
-        "https://www.hornbach.de/p/klimasplitgeraet-midea-portasplit-12-000-btu-105-m-weiss/12356554/",
-    ),
     "obi": SourceSpec(
         "obi",
         "https://www.obi.de/p/8620890/midea-mobile-split-klimaanlage-portasplit",
@@ -25,7 +21,7 @@ SPECS: dict[str, SourceSpec] = {
 }
 
 
-KNOWN_SOURCES = set(SPECS) | {"toom", "obi_stores", "toom_stores", "bauhaus_stores", "aliexpress"}
+KNOWN_SOURCES = set(SPECS) | {"hornbach", "toom", "obi_stores", "toom_stores", "bauhaus_stores", "aliexpress"}
 
 
 def unknown_sources(names) -> list:
@@ -33,6 +29,10 @@ def unknown_sources(names) -> list:
 
 
 def get_check(name: str):
+    if name == "hornbach":
+        from . import hornbach
+
+        return hornbach.check
     if name == "toom":
         from . import toom
 

@@ -7,7 +7,7 @@ product:
 max_price_eur: 850
 sources_enabled:
   - "idealo"
-  # hornbach: disabled: JS-challenge page (Cloudflare bot block), no JSON-LD; see v2
+  - "hornbach"
   - "obi"
   # toom: disabled: client-side-rendered (React); availability not in raw HTML, no httpx API; needs Playwright track (v2)
   - "bauhaus"
