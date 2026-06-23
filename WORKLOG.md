@@ -87,8 +87,15 @@ Ob GitHub-Runner-IPs weniger geblockt sind als die Sandbox → zeigt nur der CI-
 - Bestätigt: Filial-Ansatz richtig (woklima checkt bundesweit „X von Y Märkten"; ich Hamburg-fokussiert für dich).
 - Amazon (B0D3PP64JS) listet woklima auch — bei mir offen (Bot-Schutz hart).
 
-## Aktive Quellen (9): idealo, hornbach, obi, bauhaus, hagebau, obi_stores, toom_stores, bauhaus_stores, aliexpress
-Playwright (4): hornbach, toom_stores, bauhaus_stores, aliexpress.
+## Multi-Produkt (2 Varianten)
+- ✅ Refactor auf `products`-Liste (Match Offer→Produkt per EAN/Name, je eigene Preisgrenze). 3,5 kW (EAN 4048164116478)
+  vs Cool 2,35 kW (Name-Match, kein cross-match). Commit 5b5029a.
+- ✅ **aliexpress_cool** (Item 1005012383386980): Cool-Variante, aktuell **available=True, 696,70 €** → würde alarmieren!
+  (Preis via Seitentext-Heuristik, da AliExpress kein runParams mehr embedded — funktioniert aktuell, etwas fragil.)
+- Cool-Abdeckung erweiterbar (weitere Shops, falls sie die Cool-Variante führen).
+
+## Aktive Quellen (10): idealo, hornbach, obi, bauhaus, hagebau, obi_stores, toom_stores, bauhaus_stores, aliexpress, aliexpress_cool
+Playwright (5): hornbach, toom_stores, bauhaus_stores, aliexpress, aliexpress_cool.
 
 ## OFFEN (User-Aktion nötig)
 - ⚠️ **CI-Workflow updaten** (Playwright-Browser-Install) — Web-UI-Paste geliefert. OHNE das laufen die 3 Playwright-Quellen
