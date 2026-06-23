@@ -78,6 +78,18 @@ Ob GitHub-Runner-IPs weniger geblockt sind als die Sandbox → zeigt nur der CI-
   runParams beim Verfügbar-Zustand best-effort (unverifiziert, bis Item zurückkommt). Kein Bot-Challenge lokal;
   CI/Datacenter-IP-Block-Risiko (Health-Check fängt's). 8 Quellen aktiv, Suite 99 grün.
 
+## woklima.de „abgeschaut" (Referenz-Monitor)
+- ✅ **Hornbach reaktiviert** via Playwright (Cloudflare-Bypass, wie Bauhaus) — woklima zeigte es verfügbar.
+  Liest Online-Bestellbarkeit + HH-Markt-Bestand aus gerendertem Text (Hornbach lässt `availability` im JSON-LD weg).
+- ⚠️ **AliExpress NICHT übernommen**: woklimas Item (1005012383386980) ist die **„PortaSplit Cool 2,35 kW"** (Kühl-only-
+  Billigvariante) — FALSCHES Produkt (per match_exclude ausgeschlossen). Integritäts-Catch; deine Original-Quelle bleibt.
+- Hagebau: woklima nutzt andere URL (anP7004600334) — meine (anV1425543) ist EAN-verifiziert korrekt → behalten.
+- Bestätigt: Filial-Ansatz richtig (woklima checkt bundesweit „X von Y Märkten"; ich Hamburg-fokussiert für dich).
+- Amazon (B0D3PP64JS) listet woklima auch — bei mir offen (Bot-Schutz hart).
+
+## Aktive Quellen (9): idealo, hornbach, obi, bauhaus, hagebau, obi_stores, toom_stores, bauhaus_stores, aliexpress
+Playwright (4): hornbach, toom_stores, bauhaus_stores, aliexpress.
+
 ## OFFEN (User-Aktion nötig)
 - ⚠️ **CI-Workflow updaten** (Playwright-Browser-Install) — Web-UI-Paste geliefert. OHNE das laufen die 3 Playwright-Quellen
   (toom_stores, bauhaus_stores, aliexpress) auf CI NICHT (je Health-Warnung).
