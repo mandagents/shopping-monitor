@@ -16,7 +16,7 @@ def run_once(cfg, state, get_check, notify_offer, notify_health, client) -> dict
                            lambda n=name: notify_health(n))
             continue
         record_success(src_state)
-        if should_alert(offer, cfg):
+        if should_alert(offer, cfg.products):
             if is_new_alert(src_state, offer.price):
                 notify_offer(offer)
             src_state["alerted"] = True

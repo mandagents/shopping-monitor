@@ -2,11 +2,19 @@ from src.config import Config, ProductConfig
 from src.models import Offer
 from src.monitor import run_once
 
-PRODUCT = ProductConfig("4048164116478", "10002085", ["portasplit"], ["12000"], ["cool"])
+PRODUCT = ProductConfig(
+    name="Midea PortaSplit 3,5 kW",
+    ean="4048164116478",
+    model_no="10002085",
+    max_price_eur=850.0,
+    match_require_all=["portasplit"],
+    match_require_any=["12000"],
+    match_exclude_any=["cool"],
+)
 
 
 def _cfg(sources):
-    return Config(PRODUCT, 850.0, sources, True, 2)
+    return Config([PRODUCT], sources, True, 2)
 
 
 def _offer(name, price, available, ean="4048164116478"):

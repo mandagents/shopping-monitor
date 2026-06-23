@@ -1,10 +1,18 @@
-product:
-  ean: "4048164116478"
-  model_no: "10002085"
-  match_require_all: ["portasplit"]
-  match_require_any: ["12000", "12.000", "3,5", "3.5"]
-  match_exclude_any: ["cool", "2,35", "2.35"]
-max_price_eur: 850
+products:
+  - name: "Midea PortaSplit 3,5 kW (Wärmepumpe)"
+    ean: "4048164116478"
+    model_no: "10002085"
+    max_price_eur: 850
+    match_require_all: ["portasplit"]
+    match_require_any: ["12000", "12.000", "3,5", "3.5"]
+    match_exclude_any: ["cool", "2,35", "2.35"]
+  - name: "Midea PortaSplit Cool 2,35 kW"
+    ean: ""
+    model_no: ""
+    max_price_eur: 850
+    match_require_all: ["portasplit", "cool"]
+    match_require_any: ["2,35", "2.35", "2350"]
+    match_exclude_any: []
 sources_enabled:
   - "idealo"
   - "hornbach"
@@ -16,5 +24,6 @@ sources_enabled:
   - "toom_stores"
   - "bauhaus_stores"
   - "aliexpress"
+  - "aliexpress_cool"
 hamburg_pickup_priority: true
 health_fail_threshold: 3
