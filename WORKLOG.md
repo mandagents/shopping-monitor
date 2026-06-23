@@ -72,8 +72,15 @@ Ob GitHub-Runner-IPs weniger geblockt sind als die Sandbox → zeigt nur der CI-
 - **idealo/bauhaus(online)/hagebau(online):** Datacenter-IP-geblockt (503/Cloudflare/Captcha) → ggf. CI-Health-Warnungen;
   Filial-Quellen (obi_stores/toom_stores/bauhaus_stores) + obi(online) sind die robusten.
 
+## DONE (Forts.)
+- ✅ **aliexpress** (Playwright) — Item 1005012500647890 (heise-Deal 569 € Versand DE). Marker-basierte Erkennung
+  ("nicht verfügbar an Ihrem Standort"). Aktuell available=False (Deal abgelaufen/ausverkauft). Preis-Extraktion aus
+  runParams beim Verfügbar-Zustand best-effort (unverifiziert, bis Item zurückkommt). Kein Bot-Challenge lokal;
+  CI/Datacenter-IP-Block-Risiko (Health-Check fängt's). 8 Quellen aktiv, Suite 99 grün.
+
 ## OFFEN (User-Aktion nötig)
-- ⚠️ **CI-Workflow updaten** (Playwright-Browser-Install) — Web-UI-Paste geliefert. OHNE das laufen toom_stores + bauhaus_stores auf CI NICHT (Health-Warnung).
+- ⚠️ **CI-Workflow updaten** (Playwright-Browser-Install) — Web-UI-Paste geliefert. OHNE das laufen die 3 Playwright-Quellen
+  (toom_stores, bauhaus_stores, aliexpress) auf CI NICHT (je Health-Warnung).
 
 ## Next Action (Plan)
 1. **Playwright-Track** bauen (öffentl. Repo = unbegrenzte Actions, Laufzeit egal). Start: **toom** (sauberer
