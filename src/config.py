@@ -20,6 +20,8 @@ class Config:
     sources_enabled: list
     hamburg_pickup_priority: bool
     health_fail_threshold: int
+    woklima_enabled: bool = False
+    woklima_country: str = "de"
 
 
 def load_config(path: str) -> Config:
@@ -41,4 +43,6 @@ def load_config(path: str) -> Config:
         sources_enabled=list(data["sources_enabled"]),
         hamburg_pickup_priority=bool(data.get("hamburg_pickup_priority", True)),
         health_fail_threshold=int(data.get("health_fail_threshold", 3)),
+        woklima_enabled=bool(data.get("woklima_enabled", False)),
+        woklima_country=str(data.get("woklima_country", "de")),
     )

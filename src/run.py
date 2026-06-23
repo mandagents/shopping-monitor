@@ -4,9 +4,10 @@ import httpx
 
 from .config import load_config
 from .models import Offer
-from .monitor import run_once
+from .monitor import run_once, run_woklima
 from .notify import send_telegram
 from .sources import get_check, unknown_sources, KNOWN_SOURCES
+from .sources import woklima as woklima_src
 from .state import load_state, save_state
 
 CONFIG_PATH = "config.yaml"
@@ -52,6 +53,33 @@ def main() -> None:
 
     with httpx.Client() as client:
         state = run_once(cfg, state, get_check, notify_offer, notify_health, client)
+
+        if cfg.woklima_enabled:
+            note = (
+                "\n\nℹ️ woklima ist ein Frühwarn-Radar (Referenz-Monitor), "
+                "kein geprüfter Kauf — bitte im Shop verifizieren."
+            )
+
+            def notify_woklima_baseline(body: str) -> None:
+                send_telegram(
+                    token, chat_id,
+                    f"📊 <b>woklima Ausgangslage</b>\n{body}{note}",
+                    button_text="woklima öffnen", button_url=woklima_src.WEBSITE_URL,
+                )
+
+            def notify_woklima_change(body: str) -> None:
+                send_telegram(
+                    token, chat_id,
+                    f"🔔 <b>woklima: Änderung erkannt</b>\n{body}{note}",
+                    button_text="woklima öffnen", button_url=woklima_src.WEBSITE_URL,
+                )
+
+            state = run_woklima(
+                cfg, state,
+                lambda country: woklima_src.fetch_data(client, country),
+                notify_woklima_change, notify_woklima_baseline, notify_health,
+            )
+
     save_state(STATE_PATH, state)
 
 

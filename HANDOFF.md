@@ -41,6 +41,29 @@ gesehen** (AliExpress-Block), obwohl sie real bei ~697 € verfügbar ist.
 3. Optional: Cool-Variante auf weitere Shops ausweiten (falls sie die Cool-Variante führen) — aber nur sinnvoll mit Proxy (s.o.).
 4. Optional: AliExpress-Preis von Seitentext-Heuristik (`aliexpress*.py`) auf robusteres Signal umstellen, falls verfügbar.
 
+## NEU (2026-06-23, Session 3): woklima Change-Radar + Self-Verify
+- **Self-Verify lokal (Residential-IP):** 8/10 Quellen lesbar (hornbach, obi, bauhaus, hagebau,
+  obi_stores, toom_stores, aliexpress, aliexpress_cool). Fehlend: **idealo** (503 auch lokal — harter Block)
+  und **bauhaus_stores** (Playwright-XHR-Intercept → None). **aliexpress_cool = available @696,70 €** (würde
+  alarmieren — aber CI-IP-geblockt, daher sieht der CI-Bot das nicht). Tool: `tools/selfcheck.py`.
+- **woklima.de hat eine offene JSON-API** `https://woklima.de/api/availability?country=de` — **HTTP 200 auf
+  plain curl, KEIN Cloudflare** → CI-erreichbar (anders als die direkten Shops!). Felder: `retailers[]`
+  (slug/name/status/status_label/price/product_url/checked_at) + `aliexpress` (Cool-Deal-Preis) + `amazon`.
+- **WICHTIGER BEFUND (per Chrome verifiziert):** woklimas `status:"available"` ist UNZUVERLÄSSIG als Kaufsignal.
+  Live-Check 2026-06-23: woklima meldet Hornbach (749€) + OBI (799,99€) als „verfügbar", real war Hornbach
+  „z.Zt. nicht online bestellbar" + „nicht im Markt vorrätig" (HH) und OBI „Lieferung derzeit nicht möglich"
+  + alle HH-Märkte qty 0. → woklimas „verfügbar" = loses „national gelistet/Preis bekannt", KEIN buyable-now.
+  **Meine direkten Scraper sind korrekt** (available=False stimmt). woklima NICHT als grünen Kauf-Alarm wiren!
+- **Implementiert: `woklima` als CHANGE-RADAR** (kein Kauf-Trigger), genau wie vom User gewünscht
+  („monitor woklima, alarm wenn sich was tut"):
+  - `src/sources/woklima.py`: `fetch_data` + reine Funktionen `build_snapshot`/`diff_snapshots`/`summarize`.
+  - `src/monitor.py::run_woklima`: Snapshot in `state["sources"]["woklima"]["snapshot"]` (persistiert via Actions-Cache).
+    1. Lauf = einmalige „📊 Ausgangslage", danach nur „🔔 Änderung erkannt" (Status-Flip / Preis / Cool-Deal-Preis).
+    Fetch-Fehler → normaler Health-Warn. Informational, mit Hinweis „Frühwarn-Radar, kein geprüfter Kauf".
+  - Config-Toggle: `woklima_enabled: true`, `woklima_country: de` (in `config.yaml` + `src/config.py`).
+  - Wiring in `src/run.py` (nach `run_once`). 11 neue Tests (`tests/test_woklima.py`). Suite: **159 passed, 5 skipped**.
+  - Nutzen: CI-erreichbares Frühwarn-Radar deckt die bot-geblockten Shops + Cool-Deal ab, die CI direkt nicht sieht.
+
 ## Gotchas (wichtig)
 - **Token ohne `workflow`-Scope**: Workflow-Datei kann NICHT per git gepusht werden → nur per GitHub-Web-UI editieren.
 - Lokales venv `.venv` (Playwright + chromium installiert). Tests: `.venv/bin/python -m pytest -q`. Browser-Tests sind env-gated.

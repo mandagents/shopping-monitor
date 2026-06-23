@@ -27,3 +27,8 @@ sources_enabled:
   - "aliexpress_cool"
 hamburg_pickup_priority: true
 health_fail_threshold: 3
+# woklima.de change-radar: CI-reachable reference monitor (no Cloudflare).
+# Informational only — woklima's "verfügbar" is a loose national-listed flag,
+# not a verified buy (proven via Hornbach/OBI live checks). Alerts on changes.
+woklima_enabled: true
+woklima_country: de
